@@ -1,13 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
-using System.Reflection;
-using Models;
 using petclinic.Models;
 
-namespace Contexts
+namespace petclinic.Contexts
 {
     public class DatabaseContext : IDatabaseContext
     {
@@ -37,7 +32,7 @@ namespace Contexts
                             {
                                 ID = (int)reader["ID"],
                                 when = (DateTime)reader["when"],
-                                status = (string)reader["status"]
+                                status = (bool)reader["status"]
                             });
                         }
                     }
@@ -46,31 +41,7 @@ namespace Contexts
             return appointments;
         }
         //################################ 2.GetUserAvailability########################################
-        public async Task<bool> GetUserAvailability()
-        {
-            using (var connection = new SqlConnection(_connetionString))
-            {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand("GetUserAvailability", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            User user = new User
-                            {
-                                ID = (int)reader["ID"],
-                                username = (string)reader["username"],
-                                password = (string)reader["password"]
-                            };
-                            return user == null;
-                        }
-                    }
-                }
-            }
-            return true;
-        }
+        
         //#########################  3.Register   ###############################
         public async Task<User> Register(User user)
         {
@@ -111,7 +82,7 @@ namespace Contexts
                 using (var command = new SqlCommand("DeleteUser", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@username", user.username);
                     await command.ExecuteNonQueryAsync();
                 }
             }
@@ -134,7 +105,7 @@ namespace Contexts
         }
 
         // ################# 7.DeleteAppointments ##############################
-        public async Task DeleteAppointmentsAsync(Appointment appointment)
+        public async Task DeleteAppointmentAsync(Appointment appointment)
         {
             using (var connection = new SqlConnection(_connetionString))
             {
@@ -147,17 +118,17 @@ namespace Contexts
                 }
             }
         }
-        // ################# 8.ReserveAppointments ###########################
-        public async Task ReserveAppointments(Reservation reservation)
+        // ################# 8.ReserveAppointment ###########################
+        public async Task ReserveAppointment(Reservation reservation)
         {
             using (var connection = new SqlConnection(_connetionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("ReserveAppointments", connection))
+                using (var command = new SqlCommand("ReserveAppointment", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@username", reservation.username);
-                    command.Parameters.AddWithValue("@appointment", reservation.appointment);
+                    command.Parameters.AddWithValue("@when", reservation.when);
                     await command.ExecuteNonQueryAsync();
                 }
             }

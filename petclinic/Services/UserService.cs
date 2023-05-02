@@ -1,11 +1,10 @@
-﻿using Contexts;
-using Models;
+﻿using petclinic.Abstractionss;
+using petclinic.Contexts;
 using petclinic.Models;
-using StudentAPI.Services;
 
 namespace petclinic.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly IDatabaseContext _db;
         private readonly ILogger<UserService> _logger;
@@ -15,41 +14,31 @@ namespace petclinic.Services
             _logger = logger;
         }
 
-        public async Task ReserveAppointments(Reservation reservation)
+        public async Task ReserveAppointment(Reservation reservation)
         {
-            var result = await _db.ReserveAppointments();
-
-            return result;
+            await _db.ReserveAppointment(reservation);
         }
 
         public async Task UpdatePasswordAsync(User user)
         {
-            var result = await _db.UpdatePasswordAsync();
-
-            return result;
+            await _db.UpdatePasswordAsync(user);
         }
 
         public async Task<User> Register(User user)
         {
-
-            await _db.Register();
-
-            return ;
+            return await _db.Register(user);
         }
 
         public async Task<List<Appointment>> GetAvailableAppointments()
         {
-            await _db.GetAvailableAppointments();
 
-            return appointments;
+            return await _db.GetAvailableAppointments();
         }
 
         public async Task<User> Login(User user)
         {
 
-            await _db.Login(user);
-
-            return null;
+            return await _db.Login(user);
         }
     }
 }

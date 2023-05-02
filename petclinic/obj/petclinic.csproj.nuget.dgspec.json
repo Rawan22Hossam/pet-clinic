@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\projects\\petclinic\\petclinic\\petclinic.csproj": {}
+    "C:\\Users\\devah\\OneDrive\\Desktop\\pet-clinic\\petclinic\\petclinic.csproj": {}
   },
   "projects": {
-    "D:\\projects\\petclinic\\petclinic\\petclinic.csproj": {
+    "C:\\Users\\devah\\OneDrive\\Desktop\\pet-clinic\\petclinic\\petclinic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\projects\\petclinic\\petclinic\\petclinic.csproj",
+        "projectUniqueName": "C:\\Users\\devah\\OneDrive\\Desktop\\pet-clinic\\petclinic\\petclinic.csproj",
         "projectName": "petclinic",
-        "projectPath": "D:\\projects\\petclinic\\petclinic\\petclinic.csproj",
-        "packagesPath": "C:\\Users\\rawan\\.nuget\\packages\\",
-        "outputPath": "D:\\projects\\petclinic\\petclinic\\obj\\",
+        "projectPath": "C:\\Users\\devah\\OneDrive\\Desktop\\pet-clinic\\petclinic\\petclinic.csproj",
+        "packagesPath": "C:\\Users\\devah\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\devah\\OneDrive\\Desktop\\pet-clinic\\petclinic\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\rawan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\devah\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,9 +40,17 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[5.1.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.2.3, )"
+              "version": "[6.5.0, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.5, )"
             }
           },
           "imports": [
@@ -64,7 +72,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

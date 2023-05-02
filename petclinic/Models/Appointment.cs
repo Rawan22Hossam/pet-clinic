@@ -1,4 +1,4 @@
-﻿namespace Models
+﻿namespace petclinic.Models
 {
     public class Appointment
     {

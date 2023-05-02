@@ -1,11 +1,10 @@
-﻿using Models;
-using petclinic.Models;
+﻿using petclinic.Models;
 
-namespace Abstractions
+namespace petclinic.Abstractionss
 {
-    public interface IUserServices
+    public interface IUserService
     {
-        Task ReserveAppointments(Reservation reservation);
+        Task ReserveAppointment(Reservation reservation);
         Task UpdatePasswordAsync(User user);
         Task<User> Register(User user);
         Task<List<Appointment>> GetAvailableAppointments();

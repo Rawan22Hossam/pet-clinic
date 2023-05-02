@@ -4,6 +4,6 @@
     {
         public int ID { get; set; }
         public string username { get; set; }
-        public DateTime appointment { get; set; }
+        public DateTime when { get; set; }
     }
 }

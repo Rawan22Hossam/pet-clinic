@@ -16,8 +16,8 @@ ID INT PRIMARY KEY,
 
 CREATE TABLE reservations(
 ID INT PRIMARY KEY,
-username VARCHAR(20) NOT NULL FOREIGN KEY (username) REFERENCES users,
-appointment DATETIME NOT NULL FOREIGN KEY ([when]) REFERENCES appointments
+username VARCHAR(20) FOREIGN KEY (username) REFERENCES users(username),
+[when] DATETIME FOREIGN KEY  ([when]) REFERENCES appointments([when])
 );
 
 CREATE PROCEDURE GetAvailabileAppointments
@@ -26,19 +26,13 @@ BEGIN
 	SELECT * FROM appointments WHERE [status] = 0
 END
 
-CREATE PROCEDURE GetUsernameAvailability
-@username VARCHAR(20) NOT NULL
-AS
-BEGIN
-	SELECT  username FROM users WHERE [username] LIKE @username
-END
-
 CREATE PROCEDURE Register
 @username VARCHAR(20),
 @password VARCHAR(20)
 AS
 BEGIN
 	INSERT INTO users VALUES ((SELECT COALESCE(MAX(id), 0) + 1 FROM users), @username, @password)
+	SELECT * FROM users WHERE ID = (SELECT COALESCE(MAX(id), 0)
 END
 
 CREATE PROCEDURE UpdatePassword
@@ -80,7 +74,9 @@ AS
 BEGIN
 	INSERT INTO reservations VALUES ((SELECT COALESCE(MAX(id), 0) + 1 FROM reservations), @username, @appointment)
 	IF @@error = 0
-		UPDATETABLE appointments SET [status] = 1 WHERE [when] = @appointment
+		BEGIN
+			UPDATE appointments SET [status] = 1 WHERE [when] = @appointment
+		END
 	ELSE
 		ROLLBACK
 END
