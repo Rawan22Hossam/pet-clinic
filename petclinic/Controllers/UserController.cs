@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using petclinic.Abstractionss;
 using petclinic.Models;
 using petclinic.Services;
 
@@ -8,9 +9,9 @@ namespace petclinic.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _service;
+        private readonly IUserService _service;
 
-        public UserController(UserService service)
+        public UserController(IUserService service)
         {
             _service = service;
         }
@@ -22,28 +23,29 @@ namespace petclinic.Controllers
             return result;
         }
         [HttpPut]
-        public async Task UpdatePasswordAsync(User user)
+        public async Task<User> UpdatePasswordAsync(User user)
         {
-
-            await _service.UpdatePasswordAsync(user);
+            return await _service.UpdatePasswordAsync(user);
         }
 
         [HttpPost]
-        public async Task ReserveAppointment(Reservation reservation)
+        public async Task<Reservation> ReserveAppointment(Reservation reservation)
         {
-                await _service.ReserveAppointment(reservation); 
+            return await _service.ReserveAppointment(reservation); 
         }
 
-        [HttpGet]
-        public async Task<User> Login(User user)
+        [HttpPost]
+        public async Task<string> Login(User user)
         {
             if (ModelState.IsValid)
             {
                 var result = await _service.Login(user);
-                return result;
+                if (result != null)
+                    return "Login succedded to " + result.username;
             }
-            return null;
+            return "Failed";
         }
+
         [HttpGet]
         public async Task<List<Appointment>> GetAvailableAppointments()
         {

@@ -4,8 +4,8 @@ namespace petclinic.Abstractionss
 {
     public interface IUserService
     {
-        Task ReserveAppointment(Reservation reservation);
-        Task UpdatePasswordAsync(User user);
+        Task<Reservation> ReserveAppointment(Reservation reservation);
+        Task<User> UpdatePasswordAsync(User user);
         Task<User> Register(User user);
         Task<List<Appointment>> GetAvailableAppointments();
         Task<User> Login(User user);

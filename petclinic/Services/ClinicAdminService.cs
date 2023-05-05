@@ -13,9 +13,9 @@ namespace petclinic.Services
             _logger = logger;
         }
 
-        public async Task DeleteUserAsync(User user)
+        public async Task<string> DeleteUserAsync(string username)
         {
-            await _db.DeleteUserAsync(user);
+            return await _db.DeleteUserAsync(username);
         }
 
         public async Task<Appointment> AddAppointment(Appointment appointment)
@@ -24,9 +24,9 @@ namespace petclinic.Services
             return await _db.AddAppointment(appointment);
         }
 
-        public async Task DeleteAppointmentAsync(Appointment appointment)
+        public async Task<string> DeleteAppointmentAsync(string dateTme)
         {
-            await _db.DeleteAppointmentAsync(appointment);
+            return await _db.DeleteAppointmentAsync(dateTme);
         }
 
         public async Task<User> Login(User user)

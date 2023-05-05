@@ -20,7 +20,7 @@ username VARCHAR(20) FOREIGN KEY (username) REFERENCES users(username),
 [when] DATETIME FOREIGN KEY  ([when]) REFERENCES appointments([when])
 );
 
-CREATE PROCEDURE GetAvailabileAppointments
+CREATE PROCEDURE GetAvailableAppointments
 AS
 BEGIN
 	SELECT * FROM appointments WHERE [status] = 0
@@ -44,7 +44,7 @@ BEGIN
 END
 
 CREATE PROCEDURE DeleteUser
-@username INT
+@username VARCHAR(20)
 AS
 BEGIN
 	DELETE FROM users WHERE username = @username
@@ -60,14 +60,14 @@ BEGIN
 END
 
 
-CREATE PROCEDURE DeleteAppointments
+CREATE PROCEDURE DeleteAppointment
 @when DATETIME
 AS
 BEGIN
 	DELETE FROM appointments WHERE [when] = @when
 END
 
-CREATE PROCEDURE ReserveAppointments
+CREATE PROCEDURE ReserveAppointment
 @username VARCHAR(20),
 @appointment DATETIME
 AS

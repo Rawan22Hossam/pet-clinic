@@ -16,37 +16,38 @@ namespace petclinic.Controllers
         }
 
         [HttpDelete]
-        public async Task DeleteUserAsync(User user)
+        public async Task<string> DeleteUserAsync(string username)
         {
-            await _service.DeleteUserAsync(user);
+            return await _service.DeleteUserAsync(username);
         }
         [HttpDelete]
-        public async Task DeleteAppointmentsAsync(Appointment appointment)
+        public async Task<string> DeleteAppointmentAsync(string dateTime)
         {
-
-            await _service.DeleteAppointmentAsync(appointment);
+            return await _service.DeleteAppointmentAsync(dateTime);
         }
 
         [HttpPost]
-        public async Task<Appointment> AddAppointment(Appointment appointment)
+        public async Task<string> AddAppointment(Appointment appointment)
         {
             if (ModelState.IsValid)
             {
                 var result = await _service.AddAppointment(appointment);
-                return result;
+                if (result != null)
+                    return "Appointment " + result.when + " added successfully";
             }
-            return null;
+            return "Failed";
         }
 
-        [HttpGet]
-        public async Task<User> Login(User user)
+        [HttpPost]
+        public async Task<string> Login(User user)
         {
             if (ModelState.IsValid)
             {
                 var result = await _service.Login(user);
-                return result;
+                if(result  != null)
+                    return "Login succedded to "+result.username;
             }
-            return null;
+            return "Failed";
         }
 
 

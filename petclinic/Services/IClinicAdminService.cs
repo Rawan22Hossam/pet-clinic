@@ -4,9 +4,9 @@ namespace petclinic.Abstractions
 {
     public interface IClinicAdminService
     {
-        Task DeleteUserAsync(User user);
+        Task<string> DeleteUserAsync(string username);
         Task<Appointment> AddAppointment(Appointment appointment);
-        Task DeleteAppointmentAsync(Appointment appointment);
+        Task<string> DeleteAppointmentAsync(string dateTime);
         Task<User> Login(User user);
     }
 }

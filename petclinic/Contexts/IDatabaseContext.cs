@@ -6,11 +6,11 @@ namespace petclinic.Contexts
     {
         Task<List<Appointment>> GetAvailableAppointments();
         Task<User> Register(User user);
-        Task UpdatePasswordAsync(User user);
-        Task DeleteUserAsync(User user);
+        Task<User> UpdatePasswordAsync(User user);
+        Task<string> DeleteUserAsync(string username);
         Task<Appointment> AddAppointment(Appointment appointment);
-        Task DeleteAppointmentAsync(Appointment appointment);
-        Task ReserveAppointment(Reservation reservation);
+        Task<string> DeleteAppointmentAsync(string dateTime);
+        Task<Reservation> ReserveAppointment(Reservation reservation);
         Task<User> Login(User user);
     }
 }

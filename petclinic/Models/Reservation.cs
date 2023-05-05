@@ -4,6 +4,6 @@
     {
         public int ID { get; set; }
         public string username { get; set; }
-        public DateTime when { get; set; }
+        public string when { get; set; }
     }
 }

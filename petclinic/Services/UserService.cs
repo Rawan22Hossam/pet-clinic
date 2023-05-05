@@ -14,14 +14,14 @@ namespace petclinic.Services
             _logger = logger;
         }
 
-        public async Task ReserveAppointment(Reservation reservation)
+        public async Task<Reservation> ReserveAppointment(Reservation reservation)
         {
-            await _db.ReserveAppointment(reservation);
+            return await _db.ReserveAppointment(reservation);
         }
 
-        public async Task UpdatePasswordAsync(User user)
+        public async Task<User> UpdatePasswordAsync(User user)
         {
-            await _db.UpdatePasswordAsync(user);
+            return await _db.UpdatePasswordAsync(user);
         }
 
         public async Task<User> Register(User user)

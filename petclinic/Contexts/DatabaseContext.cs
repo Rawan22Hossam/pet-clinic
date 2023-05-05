@@ -30,9 +30,7 @@ namespace petclinic.Contexts
                         {
                             appointments.Add(new Appointment
                             {
-                                ID = (int)reader["ID"],
-                                when = (DateTime)reader["when"],
-                                status = (bool)reader["status"]
+                                when = reader["when"].ToString()
                             });
                         }
                     }
@@ -53,13 +51,15 @@ namespace petclinic.Contexts
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@username", user.username);
                     command.Parameters.AddWithValue("@password", user.password);
-                    await command.ExecuteNonQueryAsync();
-                    return user;
+                    var res = await command.ExecuteNonQueryAsync();
+                    if (res > 0)
+                        return user;
                 }
             }
+            return null;
         }
         // ###################### 4.UpdatePassword  #################################
-        public async Task UpdatePasswordAsync(User user)
+        public async Task<User> UpdatePasswordAsync(User user)
         {
             using (var connection = new SqlConnection(_connetionString))
             {
@@ -69,12 +69,15 @@ namespace petclinic.Contexts
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@username", user.username);
                     command.Parameters.AddWithValue("@password", user.password);
-                    await command.ExecuteNonQueryAsync();
+                    var res = await command.ExecuteNonQueryAsync();
+                    if (res > 0)
+                        return user;
                 }
             }
+            return null;
         }
         // #####################  5.DeleteUser #########################
-        public async Task DeleteUserAsync(User user)
+        public async Task<string> DeleteUserAsync(String username)
         {
             using (var connection = new SqlConnection(_connetionString))
             {
@@ -82,10 +85,13 @@ namespace petclinic.Contexts
                 using (var command = new SqlCommand("DeleteUser", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@username", user.username);
-                    await command.ExecuteNonQueryAsync();
+                    command.Parameters.AddWithValue("@username", username);
+                    var res = await command.ExecuteNonQueryAsync();
+                    if (res > 0)
+                        return "Deleted";
                 }
             }
+            return "Failed";
         }
 
         // ################# 6.AddAppointment ##################################
@@ -98,28 +104,33 @@ namespace petclinic.Contexts
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@when", appointment.when);
-                    await command.ExecuteNonQueryAsync();
-                    return appointment;
+                    var res = await command.ExecuteNonQueryAsync();
+                    if (res >0)
+                        return appointment;
                 }
             }
+            return null;
         }
 
-        // ################# 7.DeleteAppointments ##############################
-        public async Task DeleteAppointmentAsync(Appointment appointment)
+        // ################# 7.DeleteAppointment ##############################
+        public async Task<string> DeleteAppointmentAsync(string dateTime)
         {
             using (var connection = new SqlConnection(_connetionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("DeleteAppointments", connection))
+                using (var command = new SqlCommand("DeleteAppointment", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@when", appointment.when);
-                    await command.ExecuteNonQueryAsync();
+                    command.Parameters.AddWithValue("@when", dateTime);
+                    var res = await command.ExecuteNonQueryAsync();
+                    if (res > 0)
+                        return "Deleted";
                 }
             }
+            return "Failed";
         }
         // ################# 8.ReserveAppointment ###########################
-        public async Task ReserveAppointment(Reservation reservation)
+        public async Task<Reservation> ReserveAppointment(Reservation reservation)
         {
             using (var connection = new SqlConnection(_connetionString))
             {
@@ -128,10 +139,13 @@ namespace petclinic.Contexts
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@username", reservation.username);
-                    command.Parameters.AddWithValue("@when", reservation.when);
-                    await command.ExecuteNonQueryAsync();
+                    command.Parameters.AddWithValue("@appointment", reservation.when);
+                    var res= await command.ExecuteNonQueryAsync();
+                    if (res > 0)
+                        return reservation;
                 }
             }
+            return null;
         }
         // ################# 9.Login ##########################
 
@@ -139,17 +153,25 @@ namespace petclinic.Contexts
         {
             using (var connection = new SqlConnection(_connetionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand("Login", connection))
+                connection.Open();
+
+                string storedProcedureName = "Login";
+
+                using (SqlCommand command = new SqlCommand(storedProcedureName, connection))
                 {
-                    command.CommandType = CommandType.StoredProcedure;
-                    using (var reader = await command.ExecuteReaderAsync())
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    // add input parameters to the command
+                    command.Parameters.AddWithValue("@username", user.username);
+                    command.Parameters.AddWithValue("@password", user.password);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        user = null;
+                        while (reader.Read())
                         {
                             return new User
                             {
-                                ID = (int)reader["ID"],
                                 username = (string)reader["username"],
                                 password = (string)reader["password"]
                             };
